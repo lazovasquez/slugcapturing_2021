@@ -1,4 +1,4 @@
-# Slug capturing with finite-elements
+# Slug capturing with finite-elements (under construction)
 - Contents
 - Installation
 - How to run the code
