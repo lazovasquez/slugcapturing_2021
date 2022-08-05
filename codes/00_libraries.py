@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from fenics import *
-from IPython.display import clear_output  
+from IPython.display import clear_output
 from math import pi
 from matplotlib import (rc, style)
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
