@@ -1,25 +1,33 @@
 {
   "setup": {
-    "information": "",
-    "time_steps": 5,
-    "reaction_time": 0.5,
-    "phenomena": {}
-  },
-  "simulation": {
-    "space": {
-      "elements_number": 40
+    "information": "Transient simulator of a gas-liquid flow",
+    "simulation": "transient",
+    "reference": {
+      "name": "Montini2011",
+      "reference_case": 1
     },
-    "time": {
-      "time_steps": 10
+    "equations": {
+      "system": 2,
+      "viscous_terms": 1,
+      "effect": 1,
+      "dirichlet_type": 2,
+      "IBVP": 1
+    },
+    "visualization": {
+      "show_data": 2
     }
   },
   "phasic_properties": {
     "gas": {
       "name": "air",
       "properties": {
-        "density": 2710,
-        "dynamic_viscosity": 1.002e-3,
-        "inlet_velocity": 0.001
+        "dynamic_viscosity": 1.8e-5,
+        "compressibility": 293.43,
+        "reference": "Sanderse2017",
+        "inlet": {
+          "velocity": 0.001,
+          "density": 2710
+        }
       }
     },
     "liquid": {
@@ -27,10 +35,42 @@
       "properties": {
         "density": 1000,
         "kinematic_viscosity": 1.004e-6,
-        "dynamic_viscosity": 1.002e-3,
-        "inlet_velocity": 0.001,
-        "inlet_liquid_volume_fraction": 0.5
+        "dynamic_viscosity": 8.9e-4,
+        "reference": "Montini2011",
+        "inlet": {
+          "velocity": 0.001,
+          "liquid_volume_fraction": 0.5
+        }
       }
+    },
+    "interface": {
+      "outlet_pressure": 101325
     }
+  },
+  "geometry": {
+    "inclination": "horizontal",
+    "length": 1,
+    "beta": 0
+  },
+  "numerical_method": {
+    "discretization": {
+      "space": {
+        "type": "Taylor Hood",
+        "elementspace": 2,
+        "order": 2,
+        "elements_number": 40
+      },
+      "time": {
+        "time_steps": 10,
+        "time_method": 1
+      },
+      "CFL": 1
+    },
+    "fenics_parameters": {
+      "solver": "gstab"
+    }
+  },
+  "stability": {
+    "transient_spectrum": 1
   }
 }
