@@ -4,18 +4,30 @@ from ast import Num
 from fenics import *
 from IPython.display import clear_output
 from math import pi
-from matplotlib import (rc, style)
-from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+from matplotlib import(rc, style)
+from matplotlib.ticker import(MultipleLocator, FormatStrFormatter, AutoMinorLocator)
 from mpl_toolkits.mplot3d import Axes3D
 from numpy import linalg as LA
-from scipy import (linalg, matrix, sparse)
+from scipy import(linalg, matrix, sparse)
 from scipy.interpolate import interp1d
-from scipy.linalg import (eigvals, eig)
+from scipy.linalg import(eigvals, eig)
 from scipy.misc import derivative as dtv
-from scipy.optimize import (brenth, fsolve)
+from scipy.optimize import(brenth, fsolve)
 from scipy.sparse.linalg import eigs
 from scipy.sparse import csr_matrix
-from modules.constants import *
+
+from modules.constants_codes import *
+from modules.testcases_conditions import *
+from modules.equations_functions import *
+from modules.equations_matrices import *
+from modules.reference_conditions import *
+from modules.initial_boundary_conditions import *
+from modules.fem_discretization import *
+from modules.variational_form import *
+from modules.transient_solvers import *
+from modules.semi_discretized import *
+from modules.fully_discretized import *
+
 
 import math
 import matplotlib
@@ -35,6 +47,7 @@ import subprocess
 
 import h5py
 import numpy as np
+
 
 if __name__ == '__main__':
 
@@ -56,10 +69,11 @@ if __name__ == '__main__':
     with open(os.path.join('cases', f'case_{arg.case}.json'), mode='r') as file1:
         case_data = json.load(file1)  # encoding='utf-8'
 
-    # Setup
+    # SETUP
     simulation = case_data['setup']['simulation']
 
-    # Equations parameters
+    # EQUATIONS
+    # Equation system
     system = case_data['setup']['equations']['system']
     viscous_terms = case_data['setup']['equations']['viscous_terms']
     # Boundary conditions
@@ -68,33 +82,38 @@ if __name__ == '__main__':
     IBVP = case_data['setup']['equations']['IBVP']
     effect = case_data['setup']['equations']['effect']
 
-    # Plot reference conditions
-    show_data = case_data['setup']['visualization']['show_data']
-
-    # Phasic properties
+    # PLASIC PROPERTIES
+    # Liquid
     rho_l = case_data['phasic_properties']['liquid']['properties']['density']  # kg m^-3
     mu_l = case_data['phasic_properties']['liquid']['properties']['dynamic_viscosity']  # Pa s
 
+    # Gas
     mu_g = 1.8e-5  # Pa s, gas viscosity# Phase properties
     c_g = case_data['phasic_properties']['gas']['properties']['compressibility']
     var4_0 = case_data['phasic_properties']['interface']['outlet_pressure']  # Pa
 
-    # Numerical method
+    # GEOMETRY
+    # Pipe inclination
+    inclination = case_data['geometry']['inclination']
+
+    # NUMERICAL METHOD
+    # Spatial discretization
     elementspace = case_data['numerical_method']['discretization']['space']['elementspace']
     p = case_data['numerical_method']['discretization']['space']['order']
     CFL = case_data['numerical_method']['discretization']['CFL']
     nx = case_data['numerical_method']['discretization']['space']['elements_number']
 
-    # Transient simulations
+    # Time discretization
+    time_method = case_data['numerical_method']['discretization']['time']['time_method']
+    time_steps = case_data['numerical_method']['discretization']['time']['time_steps']
+
+    # TRANSIENT SIMULATIONS
+    # Stability
     transient_eigenspectrum = case_data['stability']['transient_spectrum']
 
-    # Pipe inclination
-    inclination = case_data['geometry']['inclination']
-
-    if simulation == 2:
-        discretization = 1
-    elif any([simulation == 3, simulation == 4, simulation == 5]):
-        discretization = 2
+    # VISUALIZATION
+    # Plot reference conditions
+    show_data = case_data['setup']['visualization']['show_data']
 
 # (base) root@MacBook twofluidmodel # conda activate fenicsproject
 # (fenicsproject) root@MacBook twofluidmodel # ./transient_simulator.py --case 1

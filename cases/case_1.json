@@ -55,7 +55,7 @@
   "numerical_method": {
     "discretization": {
       "space": {
-        "type": "Taylor Hood",
+        "type": "taylor_hood",
         "elementspace": 2,
         "order": 2,
         "elements_number": 40
@@ -67,7 +67,7 @@
       "CFL": 1
     },
     "fenics_parameters": {
-      "solver": "gstab"
+      "solver": "gmres"
     }
   },
   "stability": {
