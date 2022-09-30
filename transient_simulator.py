@@ -1,53 +1,49 @@
 #!/usr/bin/env python3
 
-from ast import Num
-from fenics import *
-from IPython.display import clear_output
-from math import pi
-from matplotlib import(rc, style)
-from matplotlib.ticker import(MultipleLocator, FormatStrFormatter, AutoMinorLocator)
-from mpl_toolkits.mplot3d import Axes3D
-from numpy import linalg as LA
-from scipy import(linalg, matrix, sparse)
-from scipy.interpolate import interp1d
-from scipy.linalg import(eigvals, eig)
-from scipy.misc import derivative as dtv
-from scipy.optimize import(brenth, fsolve)
-from scipy.sparse.linalg import eigs
-from scipy.sparse import csr_matrix
-
-from modules.constants_codes import *
-from modules.testcases_conditions import *
-from modules.equations_functions import *
-from modules.equations_matrices import *
-from modules.reference_conditions import *
-from modules.initial_boundary_conditions import *
-from modules.fem_discretization import *
-from modules.variational_form import *
-from modules.transient_solvers import *
-from modules.semi_discretized import *
-from modules.fully_discretized import *
-
-
+import argparse
+import json
 import math
+import os
+import pprint
+import subprocess
+import time
+from ast import Num
+from math import pi
+
+import h5py
 import matplotlib
 import matplotlib.font_manager
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
-import pprint
 import scipy.signal
-import time
 import ufl
+from fenics import *
+from IPython.display import clear_output
+from matplotlib import rc, style
+from matplotlib.ticker import (AutoMinorLocator, FormatStrFormatter,
+                               MultipleLocator)
+from mpl_toolkits.mplot3d import Axes3D
+from numpy import linalg as LA
+from scipy import linalg, matrix, sparse
+from scipy.interpolate import interp1d
+from scipy.linalg import eig, eigvals
+from scipy.misc import derivative as dtv
+from scipy.optimize import brenth, fsolve
+from scipy.sparse import csr_matrix
+from scipy.sparse.linalg import eigs
 
-import argparse
-import json
-import os
-import subprocess
-
-import h5py
-import numpy as np
-
+from modules.constants_codes import *
+from modules.equations_functions import *
+from modules.equations_matrices import *
+from modules.fem_discretization import *
+from modules.fully_discretized import *
+from modules.initial_boundary_conditions import *
+from modules.reference_conditions import *
+from modules.semi_discretized import *
+from modules.testcases_conditions import *
+from modules.transient_solvers import *
+from modules.variational_form import *
 
 if __name__ == '__main__':
 
@@ -84,13 +80,16 @@ if __name__ == '__main__':
 
     # PLASIC PROPERTIES
     # Liquid
-    rho_l = case_data['phasic_properties']['liquid']['properties']['density']  # kg m^-3
-    mu_l = case_data['phasic_properties']['liquid']['properties']['dynamic_viscosity']  # Pa s
+    # kg m^-3
+    rho_l = case_data['phasic_properties']['liquid']['properties']['density']
+    # Pa s
+    mu_l = case_data['phasic_properties']['liquid']['properties']['dynamic_viscosity']
 
     # Gas
     mu_g = 1.8e-5  # Pa s, gas viscosity# Phase properties
     c_g = case_data['phasic_properties']['gas']['properties']['compressibility']
-    var4_0 = case_data['phasic_properties']['interface']['outlet_pressure']  # Pa
+    # Pa
+    var4_0 = case_data['phasic_properties']['interface']['outlet_pressure']
 
     # GEOMETRY
     # Pipe inclination

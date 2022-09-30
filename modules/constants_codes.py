@@ -1,40 +1,49 @@
 #!/usr/bin/env python3
 
-from ast import Num
-from fenics import *
-from IPython.display import clear_output
-from math import pi
-from matplotlib import (rc, style)
-from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
-from mpl_toolkits.mplot3d import Axes3D
-from numpy import linalg as LA
-from scipy import (linalg, matrix, sparse)
-from scipy.interpolate import interp1d
-from scipy.linalg import (eigvals, eig)
-from scipy.misc import derivative as dtv
-from scipy.optimize import (brenth, fsolve)
-from scipy.sparse.linalg import eigs
-from scipy.sparse import csr_matrix
-from modules.constants_codes import *
-from fenics import *
-from scipy.misc import derivative as dtv
-
+import argparse
+import json
 import math
+import os
+import pprint
+import subprocess
+import time
+from ast import Num
+from math import pi
+
+import h5py
 import matplotlib
 import matplotlib.font_manager
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
-import pprint
 import scipy.signal
-import time
 import ufl
-import argparse
-import json
-import os
-import subprocess
-import h5py
-import numpy as np
+from fenics import *
+from IPython.display import clear_output
+from matplotlib import rc, style
+from matplotlib.ticker import (AutoMinorLocator, FormatStrFormatter,
+                               MultipleLocator)
+from mpl_toolkits.mplot3d import Axes3D
+from numpy import linalg as LA
+from scipy import linalg, matrix, sparse
+from scipy.interpolate import interp1d
+from scipy.linalg import eig, eigvals
+from scipy.misc import derivative as dtv
+from scipy.optimize import brenth, fsolve
+from scipy.sparse import csr_matrix
+from scipy.sparse.linalg import eigs
+
+from modules.constants_codes import *
+from modules.equations_functions import *
+from modules.equations_matrices import *
+from modules.fem_discretization import *
+from modules.fully_discretized import *
+from modules.initial_boundary_conditions import *
+from modules.reference_conditions import *
+from modules.semi_discretized import *
+from modules.testcases_conditions import *
+from modules.transient_solvers import *
+from modules.variational_form import *
 
 
 # Python parameters and functions
@@ -85,7 +94,7 @@ def Min(a, b):
 # parameters ["std_out_all_processes"] = False; # Print log messages only from the root process in
 # parallel
 
-# For PETSc options 
+# For PETSc options
 # (https://fenicsproject.org/docs/dolfin/1.4.0/python/programmers-reference/cpp/la/
 # SLEPcEigenSolver.html)
 # PETScOptions.set ("st_ksp_type", "preonly")
@@ -103,6 +112,7 @@ def Min(a, b):
 if not has_linear_algebra_backend("PETSc"):
     print("DOLFIN has not been configured with PETSc. Exiting.")
     exit()
+
 
 if not has_slepc():
     print("DOLFIN has not been configured with SLEPc. Exiting.")
@@ -124,10 +134,14 @@ ff_variable3 = File("results/fields/fields_linear/variable3.pvd", "compressed")
 ff_variable4 = File("results/fields/fields_linear/variable4.pvd", "compressed")
 
 # File for nonlinear simulations
-ff_variable1_nonlinear = File("results/fields/fields_nonlinear/variable1.pvd", "compressed")
-ff_variable2_nonlinear = File("results/fields/fields_nonlinear/variable2.pvd", "compressed")
-ff_variable3_nonlinear = File("results/fields/fields_nonlinear/variable3.pvd", "compressed")
-ff_variable4_nonlinear = File("results/fields/fields_nonlinear/variable4.pvd", "compressed")
+ff_variable1_nonlinear = File(
+    "results/fields/fields_nonlinear/variable1.pvd", "compressed")
+ff_variable2_nonlinear = File(
+    "results/fields/fields_nonlinear/variable2.pvd", "compressed")
+ff_variable3_nonlinear = File(
+    "results/fields/fields_nonlinear/variable3.pvd", "compressed")
+ff_variable4_nonlinear = File(
+    "results/fields/fields_nonlinear/variable4.pvd", "compressed")
 
 # (base) root@MacBook twofluidmodel # conda activate fenicsproject
 # (fenicsproject) root@MacBook twofluidmodel # ./modules/constants_codes.py
