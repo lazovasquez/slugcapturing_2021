@@ -45,9 +45,7 @@ from modules.testcases_conditions import *
 from modules.transient_solvers import *
 from modules.variational_form import *
 
-# ## Reference state
-# Stratified smooth flow
-
+# Reference state: stratified smooth flow
 if show_data == 1:
     print("Equation system :", system, ", case :",
           case, ", configuration :", inclination)

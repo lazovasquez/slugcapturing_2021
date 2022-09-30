@@ -46,7 +46,7 @@ from modules.transient_solvers import *
 from modules.variational_form import *
 
 # # 1. Equation systems for linear stability
-# > W = (alpha_l, u_l, u_g, p_i) with A != I
+# W = (alpha_l, u_l, u_g, p_i) with A != I
 
 if system == 1:
     # Amat
@@ -171,7 +171,7 @@ if system == 1:
                 [0, 0, nu_g*(1 - var1), 0]]
         return Dmat
 
-# > W : (alpha_l, u_l, u_g, p_i) with A = I
+# W : (alpha_l, u_l, u_g, p_i) with A = I
 
 if system == 2:
     # Amat
@@ -297,7 +297,7 @@ if system == 2:
     #     return Dmat
 
 
-# > System 2(FEniCS)
+# System 2(FEniCS)
 
 if system == 2:
    # Amat

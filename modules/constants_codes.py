@@ -45,32 +45,25 @@ from modules.testcases_conditions import *
 from modules.transient_solvers import *
 from modules.variational_form import *
 
+# # Brenth interval guess
+# lima = DOLFIN_EPS
+# limb = 1 - lima
+# # Fsolve initial guess
+# x0 = DOLFIN_EPS  # 0.001
 
-# Python parameters and functions
 # Parameters for integration and functions for linearization.
-
-# Gravity
-g = 9.8  # Gravity
-
-# Brenth interval guess
-lima = DOLFIN_EPS
-limb = 1 - lima
-
-# Fsolve initial guess
-x0 = DOLFIN_EPS  # 0.001
-
-
 # For linearization of sources
-def gradient(Cmat_element, nvariable):
-    return dtv(Cmat_element, ref[nvariable - 1])
+# def gradient(Cmat_element, nvariable):
+#     return dtv(Cmat_element, ref[nvariable - 1])
 
 
 # 3D matrix for fourier analysis
-def ThreeD(a, b, c):
-    lst = [[[[] for col in range(a)] for col in range(b)] for row in range(c)]
-    return lst
+# def ThreeD(a, b, c):
+#     lst = [[[[] for col in range(a)] for col in range(b)] for row in range(c)]
+#     return lst
 
 
+# FENICS PARAMETERS AND FUNCTIONS
 # For UFL
 def Max(a, b):
     return (a + b + abs(a - b))/2
@@ -79,8 +72,6 @@ def Max(a, b):
 def Min(a, b):
     return (a + b - abs(a - b))/2
 
-# FENICS PARAMETERS AND FUNCTIONS
-# Parameters and functions
 
 # Form compiler options
 # parameters ['form_compiler']['representation'] = 'uflacs'
@@ -109,23 +100,21 @@ def Min(a, b):
 
 
 # Test for PETSc and SLEPc
-if not has_linear_algebra_backend("PETSc"):
-    print("DOLFIN has not been configured with PETSc. Exiting.")
-    exit()
+# if not has_linear_algebra_backend("PETSc"):
+#     print("DOLFIN has not been configured with PETSc. Exiting.")
+#     exit()
 
 
-if not has_slepc():
-    print("DOLFIN has not been configured with SLEPc. Exiting.")
-    exit()
+# if not has_slepc():
+#     print("DOLFIN has not been configured with SLEPc. Exiting.")
+#     exit()
 
-# FILES
-# Criation of folders and files.
+# FILES: Creation of folders and files.
 
 # File for boundaries (linear simulations)
 # file_boundaries = File ("domain_linear/boundaries.xml")
 # # File for boundaries (nonlinear simulations)
 # file_boundaries = File ("domain_nonlinear/boundaries.xml")# # File for nonlinear simulations
-
 
 # File for linear simulations
 ff_variable1 = File("results/fields/fields_linear/variable1.pvd", "compressed")

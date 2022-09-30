@@ -45,27 +45,26 @@ from modules.testcases_conditions import *
 from modules.transient_solvers import *
 from modules.variational_form import *
 
-# Geometry
+
+# # Test points beta
+# testpointsbeta = len(betavector)
+
+# # Scatter of test cases in maps
+# testpointsj_l_scatter = len(j_lscatter)
+# testpointsj_g_scatter = len(j_gscatter)
+
+
+# GEOMETRY
+# Cross-sectional area
 A = pi*pow(D, 2.)/4
-p_factor = 1/c_g**2
-
-# Test points beta
-testpointsbeta = len(betavector)
-
-# Scatter of test cases in maps
-testpointsj_l_scatter = len(j_lscatter)
-testpointsj_g_scatter = len(j_gscatter)
 
 
-# Functions
-# > Geometry
 # liquid sectional area
 def A_l(var1):
     return A*var1
 
+
 # gas sectional area
-
-
 def A_g(var1):
     return A*(1 - var1)
 
@@ -100,9 +99,8 @@ def P_gl(var1):
 def P_gl_fenics(var1):
     return D*sin(gamma(var1))
 
+
 # critic diameter
-
-
 def Dc(var1):
     return g*np.cos(beta)*pi*D/(4*np.sin(gamma(var1)))
 
@@ -115,9 +113,8 @@ def Dc_fenics(var1):
 def Dh_l(var1):
     return 4.*A_l(var1)/P_lw(var1)
 
+
 # gas hydraulic diameter
-
-
 def Dh_g(var1):
     return 4.*A_g(var1)/(P_gw(var1) + P_gl(var1))
 
@@ -126,35 +123,34 @@ def Dh_g_fenics(var1):
     return 4.*A_g(var1)/(P_gw(var1) + P_gl_fenics(var1))
 
 
-# > Fluid properties
+# FLUID PROPERTIES
 # Gas density
 def rho_g(var4):
     return p_factor*var4 + DOLFIN_EPS
 
-# > Flow properties
+
+# Compressibility factor
+p_factor = 1/c_g**2
+
+
+# Flow properties
 # liquid phase velocity
-
-
 def var2(var1):
     return j_l/(var1)
 
+
 # gas phase velocity
-
-
 def var3(var1):
     return j_g/(1 - var1)
 
+
 # FRICTION
-
 # liquid Reynolds number
-
-
 def Re_l(var1, var2):
     return rho_l*var2*Dh_l(var1)/mu_l
 
+
 # gas Reynolds number
-
-
 def Re_g(var1, var3, var4):
     return rho_g(var4)*var3*Dh_g(var1)/mu_g
 
@@ -162,9 +158,8 @@ def Re_g(var1, var3, var4):
 def Re_g_fenics(var1, var3, var4):
     return rho_g(var4)*var3*Dh_g_fenics(var1)/mu_g
 
+
 # Friction factor liquid-wall
-
-
 def f_lw(var1, var2):
     return 0.046*abs(Re_l(var1, var2) + DOLFIN_EPS)**(-0.2)
 
@@ -174,9 +169,8 @@ def f_lw(var1, var2):
 # def f_lw_laminar_fenics(var1, var2):
 #     return 24/Re_l(var1, var2)
 
+
 # Friction factor gas-wall
-
-
 def f_gw(var1, var3, var4):
     return 0.046*abs(Re_g(var1, var3, var4) + DOLFIN_EPS)**(-0.2)
 
@@ -190,9 +184,8 @@ def f_gw_fenics(var1, var3, var4):
 # def f_gw_laminar_fenics(var1, var3, var4):
 #     return 16 / Re_g_fenics(var1, var3, var4)
 
+
 # interfacial friction
-
-
 def f_gl(var1, var2, var3, var4):
     return max(f_gw(var1, var3, var4), 0.014)
 
@@ -200,15 +193,13 @@ def f_gl(var1, var2, var3, var4):
 def f_gl_fenics(var1, var2, var3, var4):
     return Max(f_gw_fenics(var1, var3, var4), 0.014)
 
+
 # Shear stress liquid-wall
-
-
 def tau_lw(var1, var2):
     return 1/2*f_lw(var1, var2)*rho_l*var2*var2
 
+
 # gas shear stress
-
-
 def tau_gw(var1, var3, var4):
     return 1/2*f_gw(var1, var3, var4)*rho_g(var4)*var3*abs(var3)
 
@@ -216,9 +207,8 @@ def tau_gw(var1, var3, var4):
 def tau_gw_fenics(var1, var3, var4):
     return 1/2*f_gw_fenics(var1, var3, var4)*rho_g(var4)*var3*abs(var3)
 
+
 # interface shear stress l
-
-
 def tau_gl(var1, var2, var3, var4):
     return 1/2*f_gl(var1, var2, var3, var4)*rho_g(var4)*(var3 - var2)*abs(var3 - var2)
 
@@ -226,30 +216,26 @@ def tau_gl(var1, var2, var3, var4):
 def tau_gl_fenics(var1, var2, var3, var4):
     return 1/2*f_gl_fenics(var1, var2, var3, var4)*rho_g(var4)*(var3 - var2)*abs(var3 - var2)
 
-# > STRATIFIED FLOW
 
+# STRATIFIED FLOW
 # Equilibrium
-
-
 def equilibrium1(var1):
     return (rho_g(var4_0) - rho_l)*g*np.sin(beta) - tau_lw(var1, var2(var1))*P_lw(var1)/A_l(var1) + tau_gw(var1, var3(var1), var4_0)*P_gw(var1)/A_g(var1) + tau_gl(var1, var2(var1), var3(var1), var4_0)*P_gl(var1)*(1/A_l(var1) + 1/A_g(var1))
 
 
-# > FUNCTIONS FOR REFERENCE USING J_L
+# FUNCTIONS FOR REFERENCE USING J_L
 # liquid phase velocity
 def var2b(j_l):
     return j_l/(var1)
+
+
 # Equilibrium
-
-
 def equilibrium2(j_l):
     return (rho_g(var4_0) - rho_l)*g*np.sin(beta) - tau_lw(var1, var2b(j_l))*P_lw(var1)/A_l(var1) + tau_gw(var1, var3(var1), var4_0)*P_gw(var1)/A_g(var1) + tau_gl(var1, var2b(j_l), var3(var1), var4_0)*P_gl(var1)*(1/A_l(var1) + 1/A_g(var1))
 
 
-# # 2. Reference state functions
-
-# > Find var1 with given j_l and j_g
-
+# 2. Reference state functions
+# Find var1 with given j_l and j_g
 def ref_state(j_l, j_g, var4_0, beta, rho_l, p_factor, mu_l, mu_g, D):
     # Reference state
     var1_ref = brenth(equilibrium1, lima, limb)
@@ -269,9 +255,8 @@ def ref_state(j_l, j_g, var4_0, beta, rho_l, p_factor, mu_l, mu_g, D):
 
     return ref, Re_ref
 
-# > Find j_l with given alpha_l
 
-
+# Find j_l with given alpha_l
 def ref_state_jl(var1, j_g, var4_0, beta, rho_l, p_factor, mu_l, mu_g, D):
     # Define j_l
     j_l = fsolve(equilibrium2, x0)

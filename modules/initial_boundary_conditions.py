@@ -101,38 +101,42 @@ if any([system == 1, system == 2]):
         tbc = 0
 
         # Perturbation wave
-        variable1_dirichlet = Expression('reference1 + amplitude1*sin (frequency1*tbc - wavenumber*x[0])',
-                                         degree=deg1,
-                                         reference1=Constant(ref[0]),
-                                         amplitude1=(vect2[0]).real,
-                                         wavenumber=wavenumber_fourier,
-                                         frequency1=listreal2[0],
-                                         tbc=tbc,
-                                         domain=mesh)
-        variable2_dirichlet = Expression('reference2 + amplitude2*sin (frequency2*tbc - wavenumber*x[0])',
-                                         degree=deg2,
-                                         reference2=Constant(ref[1]),
-                                         amplitude2=(vect2[1]).real,
-                                         wavenumber=wavenumber_fourier,
-                                         frequency2=listreal2[1],
-                                         tbc=tbc,
-                                         domain=mesh)
-        variable3_dirichlet = Expression('reference3 + amplitude3*sin (frequency3*tbc - wavenumber*x[0])',
-                                         degree=deg3,
-                                         reference3=Constant(ref[2]),
-                                         amplitude3=(vect2[2]).real,
-                                         wavenumber=wavenumber_fourier,
-                                         frequency3=listreal2[2],
-                                         tbc=tbc,
-                                         domain=mesh)
-        variable4_dirichlet = Expression('reference4 + amplitude4*sin (frequency4*tbc - wavenumber*x[0])',
-                                         degree=deg4,
-                                         reference4=Constant(ref[3]),
-                                         amplitude4=(vect2[3]).real,
-                                         wavenumber=wavenumber_fourier,
-                                         frequency4=listreal2[3],
-                                         tbc=tbc,
-                                         domain=mesh)
+        variable1_dirichlet = Expression(
+            'reference1 + amplitude1*sin (frequency1*tbc - wavenumber*x[0])',
+            degree=deg1,
+            reference1=Constant(ref[0]),
+            amplitude1=(vect2[0]).real,
+            wavenumber=wavenumber_fourier,
+            frequency1=listreal2[0],
+            tbc=tbc,
+            domain=mesh)
+        variable2_dirichlet = Expression(
+            'reference2 + amplitude2*sin (frequency2*tbc - wavenumber*x[0])',
+            degree=deg2,
+            reference2=Constant(ref[1]),
+            amplitude2=(vect2[1]).real,
+            wavenumber=wavenumber_fourier,
+            frequency2=listreal2[1],
+            tbc=tbc,
+            domain=mesh)
+        variable3_dirichlet = Expression(
+            'reference3 + amplitude3*sin (frequency3*tbc - wavenumber*x[0])',
+            degree=deg3,
+            reference3=Constant(ref[2]),
+            amplitude3=(vect2[2]).real,
+            wavenumber=wavenumber_fourier,
+            frequency3=listreal2[2],
+            tbc=tbc,
+             domain=mesh)
+        variable4_dirichlet = Expression(
+            'reference4 + amplitude4*sin (frequency4*tbc - wavenumber*x[0])',
+            degree=deg4,
+            reference4=Constant(ref[3]),
+            amplitude4=(vect2[3]).real,
+            wavenumber=wavenumber_fourier,
+            frequency4=listreal2[3],
+            tbc=tbc,
+            domain=mesh)
 elif system == 3:
     if IBVP == 1:
         # Define Dirichlet boundary conditions for smooth flow
@@ -292,9 +296,6 @@ if show_data == 1:
                     optimize=True,
                     transparent=True,
                     dpi=dpi_elsevier)
-
-
-# Initial conditions
 
 # (base) root@MacBook twofluidmodel # conda activate fenicsproject
 # (fenicsproject) root@MacBook twofluidmodel # ./modules/initial_boundary_conditions.py

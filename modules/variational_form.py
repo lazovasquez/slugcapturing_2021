@@ -45,8 +45,7 @@ from modules.testcases_conditions import *
 from modules.transient_solvers import *
 from modules.variational_form import *
 
-# Variational form
-# > Linear simulations
+# Linear simulations
 # def variational_form_linear(Aeval, Beval, Ceval):
 if any([simulation == 2, simulation == 3, simulation == 4]):
     # Amat coefficient
@@ -254,7 +253,7 @@ if any([simulation == 2, simulation == 3, simulation == 4]):
             Cm_past = Cm1_lin_past + Cm2_lin_past + Cm3_lin_past + Cm4_lin_past
     # return
 
-# > Nonlinear simulations
+# Nonlinear simulations
 
 if simulation == 5:
     # if any([simulation == "stiffness" , simulation == "linear_simulation"]):
@@ -313,8 +312,7 @@ if simulation == 5:
     #         + inner(B44_fenics(variable1, variable2, variable3, variable4)*Dx(variable4, 0), v4) )*dx
 
     # Cmat
-    Cm1 = ((Constant(0.0))
-           )*v1*dx
+    Cm1 = ((Constant(0.0)))*v1*dx
 
     Cm2 = ((sin(beta)*g*rho_l*variable1 +
            tau_gl_fenics(variable1, variable2, variable3, variable4)*P_gl_fenics(variable1)/A -
@@ -325,8 +323,7 @@ if simulation == 5:
             (tau_gl_fenics(variable1, variable2, variable3, variable4)*P_gl_fenics(variable1)/A + tau_gw_fenics(variable1, variable3, variable4)*P_gw(variable1)/A)/(rho_g(variable4)*(-1 + variable1)))
            )*v3*dx
 
-    Cm4 = ((Constant(0.0))
-           )*v4*dx
+    Cm4 = ((Constant(0.0)))*v4*dx
 
     # Cmat
     # Cm1 =( inner(Cmat1_fenics(variable1, variable2, variable3, variable4), v1) )*dx

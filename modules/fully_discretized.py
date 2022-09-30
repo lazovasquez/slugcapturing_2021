@@ -47,8 +47,7 @@ from modules.variational_form import *
 
 
 # Fully discretized
-# > Loop for each time step.
-
+# Loop for each time step.
 
 if any([simulation == 3, simulation == 4]):
     if any([system == 1, system == 2]):

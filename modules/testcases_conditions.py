@@ -45,13 +45,13 @@ from modules.testcases_conditions import *
 from modules.transient_solvers import *
 from modules.variational_form import *
 
-# > Simulation
+# Simulation
 if simulation == 2:
     discretization = 1
 elif any([simulation == 3, simulation == 4, simulation == 5]):
     discretization = 2
 
-# > Geometry
+# Geometry
 # Inclination
 betavector = np.deg2rad(betavectordeg)
 
@@ -73,7 +73,7 @@ elif inclination == 4:
 if show_data == 1:
     print("Inclination = ", inclination)
 
-# > Equations
+# Equations
 # Body force
 if dirichlet_type == 2:
     Fbody = 0
@@ -93,8 +93,7 @@ if viscous_terms == 1:
 elif viscous_terms == 2:
     visc = 0
 
-# > Cases
-
+# Cases
 if case == 0:
     j_l = j_lcases[0]
     j_g = j_gcases[0]
@@ -170,7 +169,7 @@ elif case == 10:
 if show_data == 1:
     print("INFO:", case, description_case)
 
-# > Time discretization
+# Time discretization
 # Time discretization
 if time_method == 1:
     a0 = 1.0
@@ -194,7 +193,6 @@ elif time_method == 3:
 
 if show_data == 1:
     print("INFO:", time_method, description_time)
-
 
 # (base) root@MacBook twofluidmodel # conda activate fenicsproject
 # (fenicsproject) root@MacBook twofluidmodel # ./modules/constants_codes.py

@@ -46,9 +46,8 @@ from modules.transient_solvers import *
 from modules.variational_form import *
 import numpy as np
 
+
 # Characteristics
-
-
 def characteristics_function(Aeval, Beval):
     m1, _ = eig(Beval, b=Aeval, overwrite_a=True,
                 overwrite_b=True, check_finite=True)
@@ -67,10 +66,9 @@ def characteristics_function(Aeval, Beval):
 
     return listreal1, listimag1, maxchar
 
+
 # # Amplification factors and eigenvectors
 # > Matrices A,B,C
-
-
 def stability_function(Aeval, Beval, Ceval):
     Acomplex = Aeval.dot(1j)
     Bcomplex = Beval.dot(1j)
@@ -90,9 +88,8 @@ def stability_function(Aeval, Beval, Ceval):
 
     return listreal2, listimag2, m2, vect2
 
+
 # > Matrix A
-
-
 def stability_function_A(Aeval):
     m2, _ = eig(Aeval, check_finite=True)
 
@@ -108,10 +105,8 @@ def stability_function_A(Aeval):
 
     return listreal2, listimag2
 
-# # Stiffness
-# > Solver
 
-
+# Stiffness Solver
 def solver_stiffness(matrix):
     eigensolver = SLEPcEigenSolver(matrix)  # (A, B)
     # PETScOptions.set ("eps_view")
@@ -151,9 +146,8 @@ def solver_stiffness(matrix):
 
     return Real, Imag
 
-# > Function
 
-
+# Function
 def stiffness_function(Bm, visc, Cm, variable, dvariable):
     # Variational form
     R = Bm + Cm
@@ -184,9 +178,8 @@ def stiffness_function(Bm, visc, Cm, variable, dvariable):
 
     return Real, Imag, A_ufl, A_array
 
+
 # > Eigenvalue function of a sparse matrix
-
-
 def eigenvalue_function(Beval):
     m1, _ = eigs(Beval)
 

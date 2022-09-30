@@ -77,18 +77,17 @@ if __name__ == '__main__':
     # Initial conditions
     IBVP = case_data['setup']['equations']['IBVP']
     effect = case_data['setup']['equations']['effect']
+    # Constants
+    g = case_data['setup']['equations']['constants']['gravity']
 
     # PLASIC PROPERTIES
     # Liquid
-    # kg m^-3
     rho_l = case_data['phasic_properties']['liquid']['properties']['density']
-    # Pa s
     mu_l = case_data['phasic_properties']['liquid']['properties']['dynamic_viscosity']
 
     # Gas
-    mu_g = 1.8e-5  # Pa s, gas viscosity# Phase properties
+    mu_g = 1.8e-5
     c_g = case_data['phasic_properties']['gas']['properties']['compressibility']
-    # Pa
     var4_0 = case_data['phasic_properties']['interface']['outlet_pressure']
 
     # GEOMETRY

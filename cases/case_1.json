@@ -11,7 +11,10 @@
       "viscous_terms": 1,
       "effect": 1,
       "dirichlet_type": 2,
-      "IBVP": 1
+      "IBVP": 1,
+      "constants": {
+        "gravity": 9.8
+      }
     },
     "visualization": {
       "show_data": 2
